@@ -1,164 +1,82 @@
 package com.example.superhero_v4.repository;
 
+import com.example.superhero_v4.dto.HeroCityDTO;
+import com.example.superhero_v4.dto.PowerTypeDTO;
+import com.example.superhero_v4.dto.noPowersDTO;
 import com.example.superhero_v4.model.Superheroes;
-import org.springframework.data.domain.Example;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.repository.query.FluentQuery;
+import org.springframework.stereotype.Repository;
 
+import java.sql.*;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
-import java.util.function.Function;
 
+@Repository("superheroeDB")
 public class RepositoryDB implements IRepository{
-    @Override
-    public void flush() {
 
+    //1. List of all heroes in the mysql database
+    public List<Superheroes> getAllHeroes(){
+        List<Superheroes> superheroes = new ArrayList<>();
+        try (Connection con= DriverManager.getConnection("jdbc:mysql://localhost:3306/superherov4", "root", "Barthur2254!")){
+            String SQL = "SELECT * FROM SUPERHEROES";
+            Statement stmt=con.createStatement();
+            ResultSet rs = stmt.executeQuery(SQL);
+            while (rs.next()){
+                superheroes.add(new Superheroes(rs.getString("hero_name"),rs.getString("real_name"),rs.getInt("creation_year")));
+            }
+            return superheroes;
+        }
+        catch (SQLException e) {
+
+            throw new RuntimeException(e);
+        }
     }
+    // 2. list of all heroes, with heroname, realname og number of powers
 
-    @Override
-    public <S extends Superheroes> S saveAndFlush(S entity) {
-        return null;
+    public static List<noPowersDTO> getNoPowers(){
+        List<noPowersDTO> superheroes = new ArrayList<>();
+        try (Connection con= DriverManager.getConnection("jdbc:mysql://localhost:3306/superherov4", "root", "Barthur2254!")){
+            String SQL = "SELECT hero_name, real_name, no_powers FROM superheroes";
+            Statement stmt=con.createStatement();
+            ResultSet rst = stmt.executeQuery(SQL);
+            while (rst.next()){
+                superheroes.add(new noPowersDTO(rst.getString("hero_name"),rst.getString("real_name"),rst.getInt("no_powers")));
+            }
+            return superheroes;
+        }
+        catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
-
-    @Override
-    public <S extends Superheroes> List<S> saveAllAndFlush(Iterable<S> entities) {
-        return null;
+    //3. List of heroes with heroname, realname and type of superpower
+    public static List<PowerTypeDTO> getPowerType(){
+        List<PowerTypeDTO> superheroes = new ArrayList<>();
+        try (Connection con= DriverManager.getConnection("jdbc:mysql://localhost:3306/superherov4", "root", "Barthur2254!")){
+            String SQL = "SELECT hero_name, real_name, superpower FROM superheroes";
+            Statement stmt=con.createStatement();
+            ResultSet rst = stmt.executeQuery(SQL);
+            while (rst.next()){
+                superheroes.add(new PowerTypeDTO(rst.getString("hero_name"),rst.getString("real_name"),rst.getString("superpower")));
+            }
+            return superheroes;
+        }
+        catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
-
-    @Override
-    public void deleteAllInBatch(Iterable<Superheroes> entities) {
-
-    }
-
-    @Override
-    public void deleteAllByIdInBatch(Iterable<Long> longs) {
-
-    }
-
-    @Override
-    public void deleteAllInBatch() {
-
-    }
-
-    @Override
-    public Superheroes getOne(Long aLong) {
-        return null;
-    }
-
-    @Override
-    public Superheroes getById(Long aLong) {
-        return null;
-    }
-
-    @Override
-    public Superheroes getReferenceById(Long aLong) {
-        return null;
-    }
-
-    @Override
-    public <S extends Superheroes> Optional<S> findOne(Example<S> example) {
-        return Optional.empty();
-    }
-
-    @Override
-    public <S extends Superheroes> List<S> findAll(Example<S> example) {
-        return null;
-    }
-
-    @Override
-    public <S extends Superheroes> List<S> findAll(Example<S> example, Sort sort) {
-        return null;
-    }
-
-    @Override
-    public <S extends Superheroes> Page<S> findAll(Example<S> example, Pageable pageable) {
-        return null;
-    }
-
-    @Override
-    public <S extends Superheroes> long count(Example<S> example) {
-        return 0;
-    }
-
-    @Override
-    public <S extends Superheroes> boolean exists(Example<S> example) {
-        return false;
-    }
-
-    @Override
-    public <S extends Superheroes, R> R findBy(Example<S> example, Function<FluentQuery.FetchableFluentQuery<S>, R> queryFunction) {
-        return null;
-    }
-
-    @Override
-    public <S extends Superheroes> S save(S entity) {
-        return null;
-    }
-
-    @Override
-    public <S extends Superheroes> List<S> saveAll(Iterable<S> entities) {
-        return null;
-    }
-
-    @Override
-    public Optional<Superheroes> findById(Long aLong) {
-        return Optional.empty();
-    }
-
-    @Override
-    public boolean existsById(Long aLong) {
-        return false;
-    }
-
-    @Override
-    public List<Superheroes> findAll() {
-        return null;
-    }
-
-    @Override
-    public List<Superheroes> findAllById(Iterable<Long> longs) {
-        return null;
-    }
-
-    @Override
-    public long count() {
-        return 0;
-    }
-
-    @Override
-    public void deleteById(Long aLong) {
-
-    }
-
-    @Override
-    public void delete(Superheroes entity) {
-
-    }
-
-    @Override
-    public void deleteAllById(Iterable<? extends Long> longs) {
-
-    }
-
-    @Override
-    public void deleteAll(Iterable<? extends Superheroes> entities) {
-
-    }
-
-    @Override
-    public void deleteAll() {
-
-    }
-
-    @Override
-    public List<Superheroes> findAll(Sort sort) {
-        return null;
-    }
-
-    @Override
-    public Page<Superheroes> findAll(Pageable pageable) {
-        return null;
+    //4. List of heroes with heroname and city
+    public static List<HeroCityDTO> getHeroCity(){
+        List<HeroCityDTO> superheroes = new ArrayList<>();
+        try (Connection con= DriverManager.getConnection("jdbc:mysql://localhost:3306/superherov4", "root", "Barthur2254!")){
+            String SQL = "SELECT hero_name, city FROM superheroes";
+            Statement stmt=con.createStatement();
+            ResultSet rst = stmt.executeQuery(SQL);
+            while (rst.next()){
+                superheroes.add(new HeroCityDTO(rst.getString("hero_name"),rst.getString("city")));
+            }
+            return superheroes;
+        }
+        catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

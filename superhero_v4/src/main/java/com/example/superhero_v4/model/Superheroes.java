@@ -1,6 +1,6 @@
 package com.example.superhero_v4.model;
-
 import jakarta.persistence.*;
+import java.sql.Date;
 
 @Entity //Tells mysql this class will be a table
 public class Superheroes {
@@ -14,13 +14,29 @@ public class Superheroes {
     @Column
     private int creationYear;
     @Column
-    private int superpower;
+    private String superpower;
     @Column
     private String city;
     @Column
     private int noPowers;
 
-    public Superheroes(int heroID, String heroName, String realName, int creationYear, int superpower, String city, int noPowers) {
+    public Superheroes(String hero_name, String real_name, int creation_year) {
+    }
+
+    @Override
+    public String toString() {
+        return "Superheroes{" +
+                "heroID=" + heroID +
+                ", heroName='" + heroName + '\'' +
+                ", realName='" + realName + '\'' +
+                ", creationYear=" + creationYear +
+                ", superpower=" + superpower +
+                ", city='" + city + '\'' +
+                ", noPowers=" + noPowers +
+                '}';
+    }
+
+    public Superheroes(int heroID, String heroName, String realName, int creationYear, String superpower, String city, int noPowers) {
         this.heroID = heroID;
         this.heroName = heroName;
         this.realName = realName;
@@ -66,11 +82,11 @@ public class Superheroes {
         this.creationYear = creationYear;
     }
 
-    public int getSuperpower() {
+    public String getSuperpower() {
         return superpower;
     }
 
-    public void setSuperpower(int superpower) {
+    public void setSuperpower(String superpower) {
         this.superpower = superpower;
     }
 
