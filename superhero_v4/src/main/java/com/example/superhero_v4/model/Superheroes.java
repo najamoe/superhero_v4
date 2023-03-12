@@ -20,7 +20,10 @@ public class Superheroes {
     @Column
     private int noPowers;
 
-    public Superheroes(String hero_name, String real_name, int creation_year) {
+    //public Superheroes(String hero_name, String real_name, int creation_year) {
+
+
+    public Superheroes(int heroID, String heroName, String realName, int creationYear, String city, int noPowers) {
     }
 
     @Override

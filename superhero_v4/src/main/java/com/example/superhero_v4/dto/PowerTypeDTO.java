@@ -1,14 +1,10 @@
 package com.example.superhero_v4.dto;
 
-import java.util.List;
-
 public class PowerTypeDTO {
 
     private String realName;
     private String heroName;
     private String powerType;
-
-    private List<String> powerTypeList;
 
     public PowerTypeDTO(String realName, String heroName, String powerType) {
         this.realName = realName;

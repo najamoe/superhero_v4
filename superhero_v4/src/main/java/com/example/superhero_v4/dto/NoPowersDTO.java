@@ -1,16 +1,11 @@
 package com.example.superhero_v4.dto;
-
-import java.sql.Date;
-import java.util.List;
-
-public class noPowersDTO {
+public class NoPowersDTO {
 
     private String heroName;
     private String realName;
     private int noPowers;
-    private List<String> noPowersList;
 
-    public noPowersDTO(String heroName, String realName, int noPowers) {
+    public NoPowersDTO(String heroName, String realName, int noPowers) {
         this.heroName = heroName;
         this.realName = realName;
         this.noPowers = noPowers;

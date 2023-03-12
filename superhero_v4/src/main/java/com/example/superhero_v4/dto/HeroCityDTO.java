@@ -1,13 +1,9 @@
 package com.example.superhero_v4.dto;
 
-import java.util.List;
-
 public class HeroCityDTO {
 
     private String heroName;
     private String city;
-
-    private List<String> heroCityList;
 
     public HeroCityDTO(String heroName, String city) {
         this.heroName = heroName;
@@ -17,10 +13,6 @@ public class HeroCityDTO {
         return heroName;
     }
 
-    public void setHeroName(String heroName) {
-        this.heroName = heroName;
-    }
-
     public String getCity() {
         return city;
     }
@@ -28,10 +20,5 @@ public class HeroCityDTO {
     public void setCity(String city) {
         this.city = city;
     }
-
-
-
-
-
 
 }
