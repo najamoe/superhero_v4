@@ -5,31 +5,26 @@ import com.example.superhero_v4.dto.PowerTypeDTO;
 import com.example.superhero_v4.dto.NoPowersDTO;
 import com.example.superhero_v4.model.Superheroes;
 import org.springframework.stereotype.Repository;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Arrays;
 
-@Repository("superheroeDB")
+@Repository("RepositoryDB")
+
 public class RepositoryDB implements IRepository {
 
-    //1. List of all heroes in the mysql database
+      //1. List of all heroes in the mysql database
     public List<Superheroes> getAllHeroes() {
         List<Superheroes> superheroes = new ArrayList<>();
-        try (Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/superherov4", "root", "Barthur2254!")) {
-            String SQL = "SELECT * FROM superherov4.superheroes";
+        try (Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/superheroes","root","Qhr96wmr2k")){ //Din mySQL database, root som er mySQL username, kodeord til mySQL
+            String SQL = "SELECT * FROM SUPERHERO;"; // SQL select all statement
             Statement stmt = con.createStatement();
             ResultSet rs = stmt.executeQuery(SQL);
-            while (rs.next()) {
-                int heroID = rs.getInt("heroid");
-                String heroName = rs.getString("HERO_NAME");
-                String realName = rs.getString("REAL_NAME");
-                int creationYear = rs.getInt("CREATION_YEAR");
-                String city = rs.getString("city");
-                int noPowers = rs.getInt("no_Powers");
-
-                superheroes.add(new Superheroes(heroID, heroName, realName, creationYear, city, noPowers));
+            while(rs.next()){
+                superheroes.add(new Superheroes(rs.getString("HERONAME"),rs.getString("REALNAME"),rs.getDate("CREATIONYEAR")));
             }
             return superheroes;
         } catch (SQLException e) {
@@ -39,15 +34,17 @@ public class RepositoryDB implements IRepository {
 
     // Superhero by chosen name /{navn}
     public List<Superheroes> getHeroByName(String name) {
-        ArrayList<Superheroes> allHeroes = (ArrayList<Superheroes>) this.getAllHeroes();
+        ArrayList<Superheroes> allSuperheroes = (ArrayList<Superheroes>) this.getAllHeroes();
         ArrayList<Superheroes> superheroes = new ArrayList<>();
-        for (Superheroes superhero : allHeroes) {
-            if (superhero.getHeroName().toLowerCase().contains(name.toLowerCase())) {
+        for (Superheroes superhero: allSuperheroes) {
+            if (superhero.getRealName().contains(name)) {
                 superheroes.add(superhero);
             }
         }
         return superheroes;
     }
+
+    //TODO sql statement for name search
     // 2. list of all heroes, with heroname, realname og number of powers
 
     public List<NoPowersDTO> getNoPowers() {

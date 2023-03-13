@@ -4,6 +4,7 @@ import com.example.superhero_v4.dto.HeroCityDTO;
 import com.example.superhero_v4.dto.NoPowersDTO;
 import com.example.superhero_v4.dto.PowerTypeDTO;
 import com.example.superhero_v4.model.Superheroes;
+import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 

@@ -7,7 +7,9 @@ import com.example.superhero_v4.model.Superheroes;
 import com.example.superhero_v4.repository.IRepository;
 import com.example.superhero_v4.repository.RepositoryDB;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.data.RepositoryType;
+import org.springframework.context.ApplicationContext;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,48 +20,43 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController //used instead of controller, restcontroller returns JSON whereas controller returns HTML
-
+@RequestMapping("/superhero")
 public class MyController {
 
     @Autowired
-    private IRepository repositoryDB;
+    IRepository repositoryDB;
 
-    //Handle the root (/) endpoint and return a start page @return
-    @GetMapping(value = "/")
-    public String getPage() {
-        return "Welcome to superheroes";
-    }
 
     //1. List of all heroes in the mysql database
-    @GetMapping("/allheroes")
+    @GetMapping("allheroes")
     public ResponseEntity<List<Superheroes>> getAllHeroes() {
-        List<Superheroes> superheroesList = repositoryDB.getAllHeroes();
-        return new ResponseEntity<>(superheroesList, HttpStatus.OK);
+        List<Superheroes> allheroes = repositoryDB.getAllHeroes();
+        return new ResponseEntity<>(allheroes, HttpStatus.OK);
     }
 
     // Superhero by chosen name /{navn}
-    @GetMapping("/{name}")
-    public ResponseEntity<List<Superheroes>> getSuperheroByName(@PathVariable String name) {
+    @GetMapping("{name}")
+    public ResponseEntity<List<Superheroes>> getSuperheroByName(@PathVariable("name") String name) {
         List<Superheroes> superheroesList = repositoryDB.getHeroByName(name);
         return new ResponseEntity<>(superheroesList, HttpStatus.OK);
     }
 
     // 2. list of all heroes, with heroname, realname og number of powers
-    @GetMapping("/superpower/count")
+    @GetMapping("superpower/count")
     public ResponseEntity<List<NoPowersDTO>> getHeroesPowerCount() {
         List<NoPowersDTO> superheroesList = repositoryDB.getNoPowers();
         return new ResponseEntity<>(superheroesList, HttpStatus.OK);
     }
 
     //  /superpower/count/{navn}	: forespørgsel (2)
-    @GetMapping("/superpower/count/{name}")
+    @GetMapping("superpower/count/{name}")
     public ResponseEntity<List<NoPowersDTO>> getNoPowersName(@PathVariable("name") String name) {
         List<NoPowersDTO> superheroesList = repositoryDB.getNoPowersName(name);
         return new ResponseEntity<>(superheroesList, HttpStatus.OK);
     }
 
     //3. List of heroes with heroname, realname and type of superpower
-    @GetMapping("/superpower")
+    @GetMapping("superpower")
     public ResponseEntity<List<PowerTypeDTO>> getPowerType() {
         List<PowerTypeDTO> superheroesList = repositoryDB.getPowerType();
         return new ResponseEntity<>(superheroesList, HttpStatus.OK);
@@ -73,14 +70,14 @@ public class MyController {
     }
 
     //4. List of heroes with heroname and city
-    @GetMapping("/city")
+    @GetMapping("city")
     public ResponseEntity<List<HeroCityDTO>> getHeroCity() {
         List<HeroCityDTO> superheroesList = repositoryDB.getHeroCity();
         return new ResponseEntity<>(superheroesList, HttpStatus.OK);
     }
 
     //  /city/{navn}				: forespørgsel (4)
-    @GetMapping("/city/{name}")
+    @GetMapping("city/{name}")
     public ResponseEntity<List<HeroCityDTO>> getHeroCityByName(String name) {
         List<HeroCityDTO> superheroesList = repositoryDB.getHeroCityName(name);
         return new ResponseEntity<>(superheroesList, HttpStatus.OK);
